@@ -63,21 +63,21 @@ ckd = 0x400000 # bit 6 Cursorkey down
 # byte 4 - 7 contain garbage
 
 #Load MetecBD.dll
-# Change by Jason.
-#try:
-#	MetecBD = cdll[r"brailleDisplayDrivers\MetecBD.dll"]
-#except:
-#	MetecBD = None
 BASE_PATH = os.path.dirname(__file__)
-DLLNAME = "MetecBD.dll"
+DLL_NAME = "MetecBD.dll"
 WORK_PATH = os.getcwd()
+if not os.path.isfile(os.path.join(BASE_PATH, DLL_NAME)):
+	BASE_PATH = "brailleDisplayDrivers"
 os.chdir(BASE_PATH)
 
 try:
-	MetecBD=cdll.LoadLibrary(DLLNAME)
+	MetecBD = cdll.LoadLibrary(DLL_NAME)
 except:
-	MetecBD=None
-os.chdir(WORK_PATH)
+	MetecBD = None
+	log.error("LoadLibrary failed " + DLL_NAME)
+	raise
+finally:
+	os.chdir(WORK_PATH)
 
 def _do_key(key):
 	log.debug("Metec key %s"%hex(key))
