@@ -10,6 +10,7 @@
 
 from ctypes import *
 import os
+import sys
 import threading
 import wx
 
@@ -79,6 +80,11 @@ except:
 finally:
 	os.chdir(WORK_PATH)
 
+if sys.version_info[0] < 3:
+	to_bytes = lambda cells: "".join(chr(cell) for cell in cells)
+else: # Python 3, NVDA 2019.3 or later
+	to_bytes = lambda cells: bytes(cells)
+
 def _do_key(key):
 	log.debug("Metec key %s"%hex(key))
 	try:
@@ -122,26 +128,11 @@ class OneLineDisplay:
 		return self._numCells
 
 	def display(self, cells):
-		cells="".join([chr(x) for x in cells])
 		out = create_string_buffer(self._statusCells + self._numCells)
-		l = len(cells)
-		if l > self._numCells:
-		    l = self._numCells
-		for i in range(l):
-		    c1 = ord(cells[i])
-		    c2 = 0
-		    if c1  &   1: c2 |= 128
-		    if c1  &   2: c2 |=  64
-		    if c1  &   4: c2 |=  32
-		    if c1  &   8: c2 |=  16
-		    if c1  &  16: c2 |=   8
-		    if c1  &  32: c2 |=   4
-		    if c1  &  64: c2 |=   2
-		    if c1  & 128: c2 |=   1
-		    out[i+self._statusCells] = chr(c2)
+		l = min(len(cells), self._numCells)
+		out[self._statusCells:] = to_bytes(int("{:08b}".format(c)[::-1], 2) for c in cells[:l]) + b'\0' * (self._numCells - l)
 		with self._lock:
-			MetecBD.BrdWriteData(self._BrdDeviceNr,
-			    self._statusCells+self._numCells,out)
+			MetecBD.BrdWriteData(self._BrdDeviceNr, len(out), out)
 
 	def _readKeys(self):
 		# read keys
