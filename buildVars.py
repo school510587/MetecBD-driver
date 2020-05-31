@@ -19,7 +19,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description" : _("""Driver for MetecBD braille display."""),
 	# version
-	"addon_version" : "1.03",
+	"addon_version" : "1.1",
 	# Author(s)
 	"addon_author" : u"宇崝企業有限公司發行",
 	# URL for the add-on documentation support
