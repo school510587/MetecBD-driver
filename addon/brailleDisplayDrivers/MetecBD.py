@@ -8,22 +8,16 @@
 """ This file drives the BD-Devices from Metec Ingenieur AG, Stuttgart """
 # intended for NVDA-version 2011-1
 
-import controlTypes
-import addonHandler
-import braille
-import queueHandler
-from logHandler import log
 from ctypes import *
-import time
+import os
 import threading
 import wx
-import config
-#import speech
-import NVDAObjects
-import api
-import textInfos
+
+from logHandler import log
+import addonHandler
+import braille
 import inputCore
-import os
+#import speech
 
 try:
 	addonHandler.initTranslation()
