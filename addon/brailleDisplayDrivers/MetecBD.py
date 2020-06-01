@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 #brailleDisplayDrivers/MetecBD.py
 #A part of NonVisual Desktop Access (NVDA)
 #Copyright (C) 2006-2011 NVDA Contributors <http://www.nvda-project.org/>
@@ -16,11 +17,12 @@ import time
 import threading
 import wx
 import config
-import speech
+#import speech
 import NVDAObjects
 import api
 import textInfos
 import inputCore
+import os
 
 # layout of input from MetecBD (total 8 bytes)
 
@@ -62,11 +64,21 @@ ckd = 0x400000 # bit 6 Cursorkey down
 # byte 4 - 7 contain garbage
 
 #Load MetecBD.dll
-try:
-	MetecBD = cdll[r"brailleDisplayDrivers\MetecBD.dll"]
-except:
-	MetecBD = None
+# Change by Jason.
+#try:
+#	MetecBD = cdll[r"brailleDisplayDrivers\MetecBD.dll"]
+#except:
+#	MetecBD = None
+BASE_PATH = os.path.dirname(__file__)
+DLLNAME = "MetecBD.dll"
+WORK_PATH = os.getcwd()
+os.chdir(BASE_PATH)
 
+try:
+	MetecBD=cdll.LoadLibrary(DLLNAME)
+except:
+	MetecBD=None
+os.chdir(WORK_PATH)
 
 def _do_key(key):
 	log.debug("Metec key %s"%hex(key))
@@ -75,7 +87,7 @@ def _do_key(key):
 		return True
 	except inputCore.NoInputGestureAction:
 		log.debug("Metec key %s not found"%hex(key))
-		speech.speakMessage(_("keys not found"))
+#		speech.speakMessage(_("keys not found"))
 		return False
 
 class OneLineDisplay:
@@ -164,7 +176,8 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 	"""BrailleDisplayDriver for METEC-USP-Devices
 	"""
 	name = "MetecBD"
-	description = "MetecBD"
+#	description = "MetecBD"
+	description = _(u"U-Tran 光點點字顯示器")
 
 	@classmethod
 	def check(cls):
@@ -225,10 +238,12 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 			"braille_toggleTether": ("br(MetecBD):fk2+r00",),
 			"braille_previousLine": ("br(MetecBD):fk1",
 			    "br(MetecBD):fk4",),
-			"braille_scrollBack": ("br(MetecBD):fk2",),
+			"braille_scrollBack": ("br(MetecBD):fk2",
+			    "kb:numpadminus",),
 			"braille_nextLine": ("br(MetecBD):fk3",
 			    "br(MetecBD):fk6",),
-			"braille_scrollForward": ("br(MetecBD):fk5",),
+			"braille_scrollForward": ("br(MetecBD):fk5",
+			    "kb:numpadplus",),
 			# routing keys
 			"braille_routeTo": ("br(MetecBD):routing",),
 			# cursor keys
