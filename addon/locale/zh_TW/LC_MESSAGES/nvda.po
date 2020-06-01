@@ -1,0 +1,36 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the 'MetecBD' package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 'MetecBD' '1.03'\n"
+"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
+"POT-Creation-Date: 2020-08-10 15:46+0800\n"
+"PO-Revision-Date: 2020-06-02 04:07+0800\n"
+"Last-Translator: Sponge Jhan <school510587@yahoo.com.tw>\n"
+"Language-Team: 宇崝企業有限公司\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.13\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Translators: Name of the series of braille displays.
+#: addon\brailleDisplayDrivers\MetecBD.py:184
+msgid "METEC USP Devices"
+msgstr "U-Tran 光點點字顯示器"
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on to be shown on installation and add-on information.
+#: buildVars.py:17
+msgid "MetecBD Driver x86"
+msgstr "U-Tran 光點點字顯示器驅動程式 x86"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:20
+msgid "Driver for MetecBD braille display."
+msgstr "U-Tran 光點點字顯示器驅動程式。"
