@@ -17,7 +17,6 @@ from logHandler import log
 import addonHandler
 import braille
 import inputCore
-#import speech
 
 try:
 	addonHandler.initTranslation()
@@ -87,7 +86,6 @@ def _do_key(key):
 		return True
 	except inputCore.NoInputGestureAction:
 		log.debug("Metec key %s not found"%hex(key))
-#		speech.speakMessage(_("keys not found"))
 		return False
 
 class OneLineDisplay:
