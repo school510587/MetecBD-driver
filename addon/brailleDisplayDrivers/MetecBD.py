@@ -173,11 +173,9 @@ class OneLineDisplay:
 			self._routingKey = 0xff
 
 class BrailleDisplayDriver(braille.BrailleDisplayDriver):
-	"""BrailleDisplayDriver for METEC-USP-Devices
-	"""
 	name = "MetecBD"
-#	description = "MetecBD"
-	description = _(u"U-Tran 光點點字顯示器")
+	# Translators: Name of the series of braille displays.
+	description = _("METEC USP Devices")
 
 	@classmethod
 	def check(cls):
