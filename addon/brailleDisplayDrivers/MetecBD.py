@@ -121,10 +121,10 @@ class OneLineDisplay:
 		self._numCells = ord(buf[1])
 		# here you can set your own amount of status cells
 		if self._numCells == 22 or self._numCells == 42:
-		    self._numCells -= 2
-		    self._statusCells = 2
+			self._numCells -= 2
+			self._statusCells = 2
 		else:
-		    self._statusCells = 0
+			self._statusCells = 0
 		return self._numCells
 
 	def display(self, cells):
@@ -142,21 +142,19 @@ class OneLineDisplay:
 		# routing keys
 		routingKey = ord(buf[0])
 		if routingKey != 0xff: # at least 1 rk is pressed
-		    if routingKey < self._statusCells: # this iss a status key
-			routingKey += sk0
-		    elif self._statusCells:
-			routingKey -= self._statusCells
-		    self._routingKey = routingKey
+			if routingKey < self._statusCells: # this iss a status key
+				routingKey += sk0
+			elif self._statusCells:
+				routingKey -= self._statusCells
+			self._routingKey = routingKey
 		# function keyss
 		fctKey = ord(buf[2]) + (ord(buf[3]) << 8)
 		if self._keyMask == -1:
-		    self._keyMask = fctKey
-		    log.info("MetecBD length %d keyMask %s"%
-			(ord(buf[1]),hex(self._keyMask)))
+			self._keyMask = fctKey
+			log.info("MetecBD length %d keyMask %s"%(ord(buf[1]),hex(self._keyMask)))
 		fctKey &= ~self._keyMask
 		self._fctKey |= fctKey
-		if (self._fctKey or self._routingKey != 0xff) and\
-		    fctKey == 0 and routingKey == 0xff:
+		if (self._fctKey or self._routingKey != 0xff) and fctKey == 0 and routingKey == 0xff:
 			_do_key((self._fctKey << 8) | self._routingKey)
 			self._fctKey = 0
 			self._routingKey = 0xff
@@ -169,9 +167,9 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 	@classmethod
 	def check(cls):
 		if MetecBD:
-		    return True
+			return True
 		else:
-		    return False
+			return False
 
 	def __init__(self):
 		super(BrailleDisplayDriver,self).__init__()
@@ -181,25 +179,20 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 		self._lock = threading.Lock()
 		if MetecBD is None:
 			raise RuntimeError("MetecBD.dll not found")
-		self._BrdDeviceNr = \
-		    c_int(MetecBD.BrdInitDevice(c_int(0),byref( \
-		    self._BrdDeviceTyp)))
+		self._BrdDeviceNr = c_int(MetecBD.BrdInitDevice(c_int(0),byref(self._BrdDeviceTyp)))
 		if self._BrdDeviceNr.value < 0:
 			raise RuntimeError("No MetecBD found")
-		log.info("MetecBD found, typ=%d" \
-		    % self._BrdDeviceTyp.value)
+		log.info("MetecBD found, typ=%d" % self._BrdDeviceTyp.value)
 		if self._BrdDeviceTyp.value == 1:
-		    self._BrdDeviceCls=OneLineDisplay( \
-			self._BrdDeviceNr, self._lock)
+			self._BrdDeviceCls=OneLineDisplay(self._BrdDeviceNr, self._lock)
 		else:
 			self.terminate()
-			raise RuntimeError(
-			    "not supported type of MetecBD")
+			raise RuntimeError("not supported type of MetecBD")
 
 	def terminate(self):
 		super(BrailleDisplayDriver, self).terminate()
 		if self._BrdDeviceNr.value < 0:
-		    return
+			return
 		if self._BrdDeviceCls:
 			self._BrdDeviceCls.terminate()
 			self._BrdDeviceCls = None
@@ -224,13 +217,13 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 		"globalCommands.GlobalCommands": {
 			"braille_toggleTether": ("br(MetecBD):fk2+r00",),
 			"braille_previousLine": ("br(MetecBD):fk1",
-			    "br(MetecBD):fk4",),
+			"br(MetecBD):fk4",),
 			"braille_scrollBack": ("br(MetecBD):fk2",
-			    "kb:numpadminus",),
+			"kb:numpadminus",),
 			"braille_nextLine": ("br(MetecBD):fk3",
-			    "br(MetecBD):fk6",),
+			"br(MetecBD):fk6",),
 			"braille_scrollForward": ("br(MetecBD):fk5",
-			    "kb:numpadplus",),
+			"kb:numpadplus",),
 			# routing keys
 			"braille_routeTo": ("br(MetecBD):routing",),
 			# cursor keys
@@ -256,27 +249,26 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 
 class InputGesture(braille.BrailleDisplayGesture):
 
-    source = BrailleDisplayDriver.name
+	source = BrailleDisplayDriver.name
 
-    def __init__(self, keys):
-	super(InputGesture, self).__init__()
-	names = set()
-	if keys < sk0:
-	    names.add("routing")
-	    self.routingIndex = keys
-	else:
-	    if keys & ckd: names.add("ckd")
-	    if keys & ckl: names.add("ckl")
-	    if keys & ckr: names.add("ckr")
-	    if keys & cku: names.add("cku")
-	    if keys & fk1: names.add("fk1")
-	    if keys & fk2: names.add("fk2")
-	    if keys & fk3: names.add("fk3")
-	    if keys & fk4: names.add("fk4")
-	    if keys & fk5: names.add("fk5")
-	    if keys & fk6: names.add("fk6")
-	    if (keys & 0xff) < sk0: names.add("r%02d"%(keys & 0xff))
-	    if (keys & 0xff) == sk0: names.add("sk0")
-	    if (keys & 0xff) == sk1: names.add("sk1")
-	self.id = "+".join(names)
-
+	def __init__(self, keys):
+		super(InputGesture, self).__init__()
+		names = set()
+		if keys < sk0:
+			names.add("routing")
+			self.routingIndex = keys
+		else:
+			if keys & ckd: names.add("ckd")
+			if keys & ckl: names.add("ckl")
+			if keys & ckr: names.add("ckr")
+			if keys & cku: names.add("cku")
+			if keys & fk1: names.add("fk1")
+			if keys & fk2: names.add("fk2")
+			if keys & fk3: names.add("fk3")
+			if keys & fk4: names.add("fk4")
+			if keys & fk5: names.add("fk5")
+			if keys & fk6: names.add("fk6")
+			if (keys & 0xff) < sk0: names.add("r%02d"%(keys & 0xff))
+			if (keys & 0xff) == sk0: names.add("sk0")
+			if (keys & 0xff) == sk1: names.add("sk1")
+		self.id = "+".join(names)
