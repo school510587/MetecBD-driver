@@ -9,6 +9,7 @@
 # intended for NVDA-version 2011-1
 
 import controlTypes
+import addonHandler
 import braille
 import queueHandler
 from logHandler import log
@@ -23,6 +24,11 @@ import api
 import textInfos
 import inputCore
 import os
+
+try:
+	addonHandler.initTranslation()
+except:
+	log.warning("Exception occurred when loading translation.", exc_info=True)
 
 # layout of input from MetecBD (total 8 bytes)
 
