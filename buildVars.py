@@ -21,7 +21,7 @@ addon_info = {
 	# version
 	"addon_version" : "1.1",
 	# Author(s)
-	"addon_author" : u"宇崝企業有限公司發行，加上 Bo-Cheng Jhan <school510587@yahoo.com.tw> 的改進",
+	"addon_author" : u"Bo-Cheng Jhan <school510587@yahoo.com.tw> 改進自宇崝企業有限公司發行之舊版",
 	# URL for the add-on documentation support
 	"addon_url" : "http://www.u-tran.com/",
 	# Documentation file name
