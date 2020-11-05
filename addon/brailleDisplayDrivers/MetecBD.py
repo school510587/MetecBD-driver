@@ -2,6 +2,7 @@
 #brailleDisplayDrivers/MetecBD.py
 #A part of NonVisual Desktop Access (NVDA)
 #Copyright (C) 2006-2011 NVDA Contributors <http://www.nvda-project.org/>
+#Copyright (C) 2020 Bo-Cheng Jhan <school510587@yahoo.com.tw>
 #This file is covered by the GNU General Public License.
 #See the file COPYING for more details.
 
