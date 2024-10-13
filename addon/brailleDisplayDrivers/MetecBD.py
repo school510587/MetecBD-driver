@@ -64,22 +64,14 @@ ckd = 0x400000 # bit 6 Cursorkey down
 
 # byte 4 - 7 contain garbage
 
-#Load MetecBD.dll
 BASE_PATH = os.path.dirname(__file__)
 DLL_NAME = "MetecBD.dll"
-WORK_PATH = os.getcwd()
-if not os.path.isfile(os.path.join(BASE_PATH, DLL_NAME)):
-	BASE_PATH = "brailleDisplayDrivers"
-os.chdir(BASE_PATH)
-
 try:
-	MetecBD = cdll.LoadLibrary(DLL_NAME)
+	MetecBD = CDLL(os.path.join(BASE_PATH, DLL_NAME))
 except:
 	MetecBD = None
-	log.error("LoadLibrary failed " + DLL_NAME)
+	log.error("CDLL construction failed: " + DLL_NAME)
 	raise
-finally:
-	os.chdir(WORK_PATH)
 
 if sys.version_info[0] < 3:
 	to_bytes = lambda cells: "".join(chr(cell) for cell in cells)
