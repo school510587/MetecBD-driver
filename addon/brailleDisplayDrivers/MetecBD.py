@@ -173,6 +173,7 @@ class BrailleDisplayDriver(braille.BrailleDisplayDriver):
 		if MetecBD is None:
 			raise RuntimeError("MetecBD.dll not found")
 		self._BrdDeviceNr = c_int(MetecBD.BrdInitDevice(c_int(0),byref(self._BrdDeviceTyp)))
+		log.info("self._BrdDeviceNr.value = " + str(self._BrdDeviceNr.value) + ", self._BrdDeviceTyp.value = " + str(self._BrdDeviceTyp.value))
 		if self._BrdDeviceNr.value < 0:
 			raise RuntimeError("No MetecBD found")
 		log.info("MetecBD found, typ=%d" % self._BrdDeviceTyp.value)
